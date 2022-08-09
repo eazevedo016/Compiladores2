@@ -17,6 +17,7 @@ class Lexico():
         valor = ''
         token = None
         estado = 0
+        listaPalavrasReservadas = ['program' , 'ident' , 'begin' , 'end' , 'real' , 'integer'  , 'read' , 'write']
         # if(not self.pos == 0):
         #     self.backChar()
         
@@ -45,7 +46,7 @@ class Lexico():
                     estado = 12
                     # continue
                     valor += c
-                elif (self.isPalavraReservada(c)):
+                elif (self.isLetraMinuscula(c)):
                     estado = 7
                     valor += c
                 elif (self.isOperadorAtribuicao1(c)):
@@ -88,22 +89,22 @@ class Lexico():
                 token = Token()
 
                 # atribui o valor e tipo de token
-                token.tipo = TipoToken.numeroReal
+                token.tipo = TipoToken.numeroInteiro
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
 
             # ESTADO 4
             if(estado == 4):
                 token = Token()
                 
                 # atribui o valor e tipo de token
-                token.tipo = TipoToken.numero
+                token.tipo = TipoToken.numeroReal
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
 
             # ESTADO 5
             if(estado == 5):
@@ -114,7 +115,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
 
             # ESTADO 6
             if(estado == 6):
@@ -125,12 +126,16 @@ class Lexico():
                 token.valor = str(valor)
                 self.backChar()
 
-                return token.toString
+                return token.toString()
 
             # ESTADO 7
             if(estado == 7):
-                if(self.isPalavraReservada(c)):
+                if(self.isLetraMinuscula(c)):
                     estado = 7
+                    valor += c
+                    continue
+                elif(self.isUnderline(c)):
+                    estado = 14
                     valor += c
                     continue
                 else:
@@ -143,11 +148,15 @@ class Lexico():
                 token = Token()
                 
                 # atribui o valor e tipo de token
-                token.tipo = TipoToken.palavras_reservadas
+                if valor in listaPalavrasReservadas:
+                    token.tipo = TipoToken.palavras_reservadas
+                else:
+                    token.tipo = TipoToken.variaveis
+
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
                 
 
             # ESTADO 9
@@ -168,7 +177,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
 
 
             # ESTADO 11
@@ -180,7 +189,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
             
             # ESTADO 12
             if(estado == 12):
@@ -191,7 +200,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
             
             # ESTADO 13
             if(estado == 13):
@@ -202,7 +211,29 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString
+                return token.toString()
+            
+            # ESTADO 14
+            if(estado == 14):
+                if(self.isLetraMinuscula(c)):
+                    estado = 7
+                    valor += c
+                    continue
+                else:
+                    estado = 15
+
+            # ESTADO 15
+            if(estado == 15):
+                token = Token()
+                
+                # atribui o valor e tipo de token
+                token.tipo = TipoToken.variaveis
+                token.valor = valor
+                self.backChar()
+
+                return token.toString()
+        
+
         
 
     # POSSIBILIDADES QUE LEVAM A UM ESTADO X
@@ -223,7 +254,7 @@ class Lexico():
             self.linha+=1
         return (c == '\n' or c == '\t' or c == ' ')
 
-    def isPalavraReservada(self,c):
+    def isLetraMinuscula(self,c):
         return (c >= 'a' and c <= 'z') 
     
     def isOperadorAtribuicao1(self,c):
@@ -234,6 +265,9 @@ class Lexico():
 
     def isOutros(self,c):
         return (c == ';' or c == ',')
+
+    def isUnderline(self,c):
+        return (c == '_')
 
 
 

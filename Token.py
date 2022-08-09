@@ -4,8 +4,8 @@ from tokenize import String
 
 class TipoToken(Enum):
 
-    # numeros naturais = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    numero = 0
+    # numeros inteiros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    numeroInteiro = 0
 
     # numero real
     numeroReal = 1
@@ -26,7 +26,9 @@ class TipoToken(Enum):
     relacional = 6
 
     # outros = [, ;]
-    outros = 6
+    outros = 7
+
+    variaveis = 8
 
 
 

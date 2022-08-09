@@ -13,9 +13,7 @@ Especificação da Sintaxe da Linguagem LALG
 <comandos> -> <comando> <mais_comandos>
 <mais_comandos> -> ; <comandos> | λ
 
-<comando> -> 	read (ident) |
-							write (ident) |
-							ident := <expressao>
+<comando> -> 	read (ident) | write (ident) | ident := <expressao>
 							
 <expressao> -> <termo> <outros_termos>
 <termo> -> <op_un> <fator> <mais_fatores>

@@ -1,0 +1,16 @@
+Não terminais:
+
+<programa> , <corpo> , <dc> , <dc_v> , <mais_dc> , <tipo_var> , <variaveis> , <mais_var> 
+<comandos> , <comando> , <mais_comandos> , <expressao> , <termo> , <outros_termos>
+<op_un> , <op_ad> , <op_mul> , <fator> , <mais_fatores> , 
+
+Terminais: 
+
+:=  , ; , : , ( , ) , program , ident , begin , end , real , integer  , read , write , numero_int , numero_real 
+
+operadores:             + , - , / *
+numero:                 numero_int , numero_real
+palavras_reservadas:    program , ident , begin , end , real , integer  , read , write 
+precedencia:            ( , )
+outros:                 :=  , ; , :
+

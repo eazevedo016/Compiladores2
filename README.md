@@ -10,23 +10,23 @@ Terminais:
 
 ## First
 - First (programa) 		  = { program }
-- First (corpo) 		      = {	}										U First (dc) 			  = { λ , real , integer }
-- First (dc) 			      = { λ }										U First (dc_v)		  = { λ , real , integer }
-- First (mais_dc) 		  = { ; , λ }
-- First (dc_v) 			  = {  }   									    U First (tipo_var)	  = { real , integer }
+- First (corpo) 		      = { begin	}										U First (dc) 			  = { λ begin real integer }
+- First (dc) 			      = { λ }										U First (dc_v)		  = { λ  real  integer }
+- First (mais_dc) 		  = { ;  λ }
+- First (dc_v) 			  = {  }   									    U First (tipo_var)	  = { real  integer }
 - First (tipo_var) 		  = { real , integer }
 - First (variaveis) 	      = { ident }
 - First (mais_var) 		  = { , λ }
 - First (comandos) 		  = {  }										U First (comando)		  = { read , write , ident }
-- First (mais_comandos)     = { ; , λ }
+- First (mais_comandos)     = { ;  λ }
 - First (comando) 		  = { read , write , ident }
-- First (expressao) 	      = {  }										U First (termo)		  = { - , λ }
-- First (termo) 		      = {  }										U First (op_un)		  = { - , λ }
-- First (op_un) 		      = { - , λ }
-- First (fator) 		      = { ident , numero_int , numero_real , ( }
+- First (expressao) 	      = {  }			U First (termo)	= { - }
+- First (termo) 		      = {  }			U First (op_un)	= { - }
+- First (op_un) 		      = { -  λ }
+- First (fator) 		      = { ident  numero_int  numero_real  ( }
 - First (outros_termos)     = { λ }										U First (op_ad)		  = { λ , + , - }
 - First (op_ad) 		      = { + , - }
-- First (mais_fatores) 	  = { λ }										U First (op_mul)		  = { λ , * , / }
+- First (mais_fatores) 	  = { λ }	        U First (op_mul) U First (op_mul) U First (op_mul)		
 - First (op_mul) 		      = { * , / }
 
 -sintetizando:

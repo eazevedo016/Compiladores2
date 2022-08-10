@@ -3,11 +3,12 @@
 
 
 # Alfabeto
+Terminais:
+- :=  , ; , : , ( , ) , program , ident , begin , end , real , integer  , read , write , numero_int , numero_real 
 
 # First e Follow
 
 ## First
-
 First (<programa>) 		  = { program }
 First (<corpo>) 		    = {	}										  U First (<dc>) 			  = { λ , real , integer }
 First (<dc>) 			      = { λ }										U First (<dc_v>)		  = { λ , real , integer }
@@ -50,5 +51,4 @@ First (<op_ad>) 		    = { + , - }
 First (<mais_fatores>) 	= { λ , * , / }
 First (<op_mul>) 		    = { * , / }
 
-Terminais:
-- :=  , ; , : , ( , ) , program , ident , begin , end , real , integer  , read , write , numero_int , numero_real 
+

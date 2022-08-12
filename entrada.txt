@@ -7,6 +7,4 @@ begin
   write(b);
 end
 
-program teste real : a,b; begin read(a); 1.5 b := a * a; write(b); end
-
 

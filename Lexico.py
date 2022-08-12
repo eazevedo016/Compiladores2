@@ -93,7 +93,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
 
             # ESTADO 4
             if(estado == 4):
@@ -104,7 +104,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
 
             # ESTADO 5
             if(estado == 5):
@@ -115,7 +115,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
 
             # ESTADO 6
             if(estado == 6):
@@ -126,7 +126,7 @@ class Lexico():
                 token.valor = str(valor)
                 self.backChar()
 
-                return token.toString()
+                return token
 
             # ESTADO 7
             if(estado == 7):
@@ -156,7 +156,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
                 
 
             # ESTADO 9
@@ -177,7 +177,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
 
 
             # ESTADO 11
@@ -189,7 +189,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
             
             # ESTADO 12
             if(estado == 12):
@@ -200,7 +200,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
             
             # ESTADO 13
             if(estado == 13):
@@ -211,7 +211,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
             
             # ESTADO 14
             if(estado == 14):
@@ -231,7 +231,7 @@ class Lexico():
                 token.valor = valor
                 self.backChar()
 
-                return token.toString()
+                return token
         
 
         
@@ -309,6 +309,6 @@ def main():
         
     
 
-main()
+# main()
     
 

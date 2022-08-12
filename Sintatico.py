@@ -10,21 +10,21 @@ class Sintatico():
     # ---------------------------------------MÉTODOS DE CONSULTA NA TABELA M---------------------------------------
 
     def is_PROGRAMA(self, token):
-        global pilha
+        
         if(token=='program'):
             self.pilha = self.pilha.replace('PROGRAMA','program ident CORPO .',1)
         else:
             raise Exception('Erro sintático.')
 
     def is_CORPO(self, token):
-        global pilha
+        
         if(token=='real' or token=='integer'):
             self.pilha = self.pilha.replace('CORPO','DC begin COMANDOS end',1)
         else:
             raise Exception('Erro sintático.')
 
     def is_DC(self, token):
-        global pilha
+        
         if(token=='begin'):
             self.pilha = self.pilha.replace('DC','',1)
             self.pilha = self.pilha.lstrip()
@@ -34,14 +34,14 @@ class Sintatico():
             raise Exception('Erro sintático.')
 
     def is_DCV(self, token):
-        global pilha
+        
         if(token=='real' or token=='integer'):
             self.pilha = self.pilha.replace('DC_V','TIPO_VAR : VARIAVEIS',1)
         else:
             raise Exception('Erro sintático.')
 
     def is_MAISDC(self, token):
-        global pilha
+        
         if(token==';'):
             self.pilha = self.pilha.replace('MAIS_DC','; DC',1)
         elif(token=='begin'):
@@ -52,7 +52,7 @@ class Sintatico():
 
 
     def is_TIPOVAR(self, token):
-        global pilha
+        
         if(token=='real'):
             self.pilha = self.pilha.replace('TIPO_VAR','real',1)
         elif(token=='integer'):
@@ -62,7 +62,7 @@ class Sintatico():
 
 
     def is_VARIAVEIS(self, token):
-        global pilha
+        
         if(token=='ident'):
             self.pilha = self.pilha.replace('VARIAVEIS','ident MAIS_VAR',1)
         elif(token=='integer'):
@@ -73,7 +73,7 @@ class Sintatico():
 
 
     def is_MAISVAR(self, token):
-        global pilha
+        
         if(token==';' or token=='begin'):
             self.pilha = self.pilha.replace('MAIS_VAR','ident MAIS_VAR',1)
         elif(token==','):
@@ -83,7 +83,7 @@ class Sintatico():
 
 
     def is_COMANDOS(self, token):
-        global pilha
+        
         if(token=='ident' or token=='write' or token=='read'):
             self.pilha = self.pilha.replace('COMANDOS','COMANDO MAIS_COMANDOS',1)
         else:
@@ -91,7 +91,7 @@ class Sintatico():
 
 
     def is_COMANDO(self, token):
-        global pilha
+        
         if(token=='ident'):
             self.pilha = self.pilha.replace('COMANDO','ident := EXPRESSAO',1)
         elif(token=='write'):
@@ -103,7 +103,7 @@ class Sintatico():
 
 
     def is_MAISCOMANDOS(self, token):
-        global pilha
+        
         if(token==';'):
             self.pilha = self.pilha.replace('MAISCOMANDOS','; COMANDOS',1)
         elif(token=='end'):
@@ -114,7 +114,7 @@ class Sintatico():
 
 
     def is_EXPRESSAO(self, token):
-        global pilha
+        
         if(token=='-' or token=='(' or token=='ident' or token=='numero_int' or token=='numero_real'):
             self.pilha = self.pilha.replace('EXPRESSAO','TERMO OUTROS_TERMOS',1)
         else:
@@ -122,7 +122,7 @@ class Sintatico():
 
 
     def is_TERMO(self, token):
-        global pilha
+        
         if(token=='-'):
             self.pilha = self.pilha.replace('TERMO','OP_UN FATOR MAIS_FATORES',1)
         else:
@@ -130,7 +130,7 @@ class Sintatico():
 
 
     def is_OUTROSTERMOS(self, token):
-        global pilha
+        
         if(token=='+' or token=='-'):
             self.pilha = self.pilha.replace('OUTROSTERMOS','OP_AD TERMO OUTROS_TERMOS',1)
         elif(token==';' or token==')' or token=='end'):
@@ -141,7 +141,7 @@ class Sintatico():
 
 
     def is_OPUN(self, token):
-        global pilha
+        
         if(token=='-'):
             self.pilha = self.pilha.replace('OPUN','-',1)
         elif(token=='(' or token==')' or token=='ident' or token=='numero_int' or token==')' or token=='numero_real'):
@@ -152,7 +152,7 @@ class Sintatico():
 
 
     def is_OPAD(self, token):
-        global pilha
+        
         if(token=='-'):
             self.pilha = self.pilha.replace('OPUN','-',1)
         elif(token=='+'):
@@ -161,7 +161,7 @@ class Sintatico():
             raise Exception('Erro sintático.')
 
     def is_OPMUL(self, token):
-        global pilha
+        
         if(token=='/'):
             self.pilha = self.pilha.replace('OPMUL','/',1)
         elif(token=='*'):
@@ -172,7 +172,7 @@ class Sintatico():
 
 
     def is_FATOR(self, token):
-        global pilha
+        
         if(token=='('):
             self.pilha = self.pilha.replace('FATOR','( EXPRESSAO )',1)
         elif(token=='ident'):
@@ -185,7 +185,7 @@ class Sintatico():
             raise Exception('Erro sintático.')
 
     def is_MAISFATORES(self, token):
-        global pilha
+        
         if(token=='+' or token=='-' or token==';' or token==')' or token=='end'):
             self.pilha = self.pilha.replace('MAISFATORES','',1)
             self.pilha = self.pilha.lstrip()

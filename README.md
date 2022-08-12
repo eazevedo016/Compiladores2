@@ -9,46 +9,51 @@ Terminais:
 # First e Follow
 
 ## First
-- First (programa) 		  = { program }
-- First (corpo) 		      = { begin	}										U First (dc) 			  = { λ begin real integer }
-- First (dc) 			      = { λ }										U First (dc_v)		  = { λ  real  integer }
-- First (mais_dc) 		  = { ;  λ }
-- First (dc_v) 			  = {  }   									    U First (tipo_var)	  = { real  integer }
-- First (tipo_var) 		  = { real , integer }
-- First (variaveis) 	      = { ident }
-- First (mais_var) 		  = { , λ }
-- First (comandos) 		  = {  }										U First (comando)		  = { read , write , ident }
-- First (mais_comandos)     = { ;  λ }
-- First (comando) 		  = { read , write , ident }
-- First (expressao) 	      = {  }			U First (termo)	= { - }
-- First (termo) 		      = {  }			U First (op_un)	= { - }
-- First (op_un) 		      = { -  λ }
-- First (fator) 		      = { ident  numero_int  numero_real  ( }
-- First (outros_termos)     = { λ }										U First (op_ad)		  = { λ , + , - }
-- First (op_ad) 		      = { + , - }
-- First (mais_fatores) 	  = { λ }	        U First (op_mul) U First (op_mul) U First (op_mul)		
-- First (op_mul) 		      = { * , / }
 
--sintetizando:
+- FIRST(PROGRAMA) -> { program }
+- FIRST(CORPO) -> { begin integer real }
+- FIRST(DC) -> { integer real λ }
+- FIRST(COMANDOS) -> { ident read write  }
+- FIRST(DC_V) -> { integer real }
+- FIRST(MAIS_DC) -> { ; λ }
+- FIRST(TIPO_VAR) -> { integer real }
+- FIRST(VARIAVEIS) -> { ident }
+- FIRST(MAIS_VAR) -> { , λ }
+- FIRST(COMANDO) -> { ident read write }
+- FIRST(MAIS_COMANDOS) -> { ; λ }
+- FIRST(EXPRESSAO) -> { ident ( - numero_int numero_real }
+- FIRST(TERMO) -> { ident ( - numero_int numero_real }
+- FIRST(OUTROS_TERMOS) -> { - + λ }
+- FIRST(OP_UN) -> { - λ }
+- FIRST(FATOR) -> { ident ( numero_int numero_real }
+- FIRST(MAIS_FATORES) -> { / * λ }
+- FIRST(OP_AD) -> { - + }
+- FIRST(OP_MUL) -> { / * }
 
-- First (programa) 		  = { program }
-- First (corpo) 		      = { λ , real , integer }
-- First (dc) 			      = { λ , real , integer }
-- First (mais_dc) 		  = { ; , λ }
-- First (dc_v) 			  = { real , integer }
-- First (tipo_var) 		  = { real , integer }
-- First (variaveis) 	      = { ident }
-- First (mais_var) 		  = { , λ }
-- First (comandos) 		  = { read , write , ident }
-- First (mais_comandos)     = { ; , λ }
-- First (comando) 		  = { read , write , ident }
-- First (expressao) 	      = { - , λ }
-- First (termo) 		      = { - , λ }
-- First (op_un) 		      = { - , λ }
-- First (fator) 		      = { ident , numero_int , numero_real , ( }
-- First (outros_termos)     = { λ , + , - }
-- First (op_ad) 		      = { + , - }
-- First (mais_fatores) 	  = { λ , * , / }
-- First (op_mul) 		      = { * , / }
+
+## Follow
+
+- FOLLOW(PROGRAMA) -> {  }
+- FOLLOW(CORPO) -> { . }
+- FOLLOW(DC) -> { begin }
+- FOLLOW(COMANDOS) -> { end }
+- FOLLOW(DC_V) -> { begin ; }
+- FOLLOW(MAIS_DC) -> { begin }
+- FOLLOW(TIPO_VAR) -> { : }
+- FOLLOW(VARIAVEIS) -> { begin ; }
+- FOLLOW(MAIS_VAR) -> { begin ; }
+- FOLLOW(COMANDO) -> { end ; }
+- FOLLOW(MAIS_COMANDOS) -> { end }
+- FOLLOW(EXPRESSAO) -> { end ; ) }
+- FOLLOW(TERMO) -> { end ; ) - + }
+- FOLLOW(OUTROS_TERMOS) -> { end ; ) }
+- FOLLOW(OP_UN) -> { ident ( numero_int numero_real }
+- FOLLOW(FATOR) -> { end ; ) - + / * }
+- FOLLOW(MAIS_FATORES) -> { end ; ) - + }
+- FOLLOW(OP_AD) -> { ident ( - numero_int numero_real }
+- FOLLOW(OP_MUL) -> { ident ( numero_int numero_real }
+
+
+
 
 

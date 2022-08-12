@@ -1,15 +1,12 @@
 program teste
 real : a,b;
-integer : c, d;
-
 
 begin 
 	read(a); 1.5
-	read(c); 5
-  b := a * a + a;
-  d := 2*c + c;
-  write(a);
+  b := a * a;
   write(b);
-  write(c);
-  write(d)
 end
+
+program teste real : a,b; begin read(a); 1.5 b := a * a; write(b); end
+
+

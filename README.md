@@ -2,6 +2,45 @@
 ![image](https://user-images.githubusercontent.com/75282286/183781215-6047fa4d-a427-46da-a9d7-7e227313ae0f.png)
 
 
+# Gramática 
+ 
+- PROGRAMA -> program ident CORPO .
+- CORPO -> DC begin COMANDOS end
+- DC -> DC_V MAIS_DC  
+- DC -> 
+- MAIS_DC -> ; DC 
+- MAIS_DC -> 
+- DC_V ->  TIPO_VAR : VARIAVEIS
+- TIPO_VAR -> real 
+- TIPO_VAR -> integer
+- VARIAVEIS -> ident MAIS_VAR
+- MAIS_VAR -> , VARIAVEIS 
+- MAIS_VAR -> 
+- COMANDOS -> COMANDO MAIS_COMANDOS
+- MAIS_COMANDOS -> ; COMANDOS 
+- MAIS_COMANDOS -> 
+- COMANDO -> read ( ident ) 
+- COMANDO -> write ( ident )
+- COMANDO -> ident := EXPRESSAO						
+- EXPRESSAO -> TERMO OUTROS_TERMOS
+- TERMO -> OP_UN FATOR MAIS_FATORES
+- OP_UN -> - 
+- OP_UN -> 
+- FATOR -> ident 
+- FATOR -> numero_int 
+- FATOR -> numero_real 
+- FATOR -> ( EXPRESSAO )
+- OUTROS_TERMOS -> OP_AD TERMO OUTROS_TERMOS 
+- OUTROS_TERMOS -> 
+- OP_AD -> + 
+- OP_AD -> -
+- MAIS_FATORES -> OP_MUL FATOR MAIS_FATORES 
+- MAIS_FATORES -> 
+- OP_MUL -> *
+- OP_MUL -> /
+
+
+
 # Alfabeto
 Terminais:
 - :=  , ; , : , ( , ) , program , ident , begin , end , real , integer  , read , write , numero_int , numero_real 

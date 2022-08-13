@@ -9,7 +9,10 @@ class Lexico():
             self.pos = 0
     linha = 1
 
-    
+    # token = Token()
+    # token.valor = 'a'
+    # token.tipo = TipoToken.variaveis
+    # print(token.tipo.value)
     
 
     def nextToken(self):

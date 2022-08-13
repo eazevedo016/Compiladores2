@@ -1,202 +1,207 @@
 from Lexico import Lexico
+from Token import Token,TipoToken
 
 
 class Sintatico():
     listaSubCadeias = []
     pilha = ""
+    linha = 0
 
 
 
     # ---------------------------------------MÉTODOS DE CONSULTA NA TABELA M---------------------------------------
 
+    
+
     def is_PROGRAMA(self, token):
         
-        if(token=='program'):
+        if(token.valor=='program'):
             self.pilha = self.pilha.replace('PROGRAMA','program ident CORPO .',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
     def is_CORPO(self, token):
         
-        if(token=='real' or token=='integer'):
+        if(token.valor=='real' or token.valor=='integer'):
             self.pilha = self.pilha.replace('CORPO','DC begin COMANDOS end',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
     def is_DC(self, token):
         
-        if(token=='begin'):
+        if(token.valor=='begin' or token.valor=='$'):
             self.pilha = self.pilha.replace('DC','',1)
             self.pilha = self.pilha.lstrip()
-        elif(token=='real' or token=='integer'):
+        elif(token.valor=='real' or token.valor=='integer'):
             self.pilha = self.pilha.replace('DC','DC_V MAIS_DC',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
     def is_DCV(self, token):
         
-        if(token=='real' or token=='integer'):
+        if(token.valor=='real' or token.valor=='integer'):
             self.pilha = self.pilha.replace('DC_V','TIPO_VAR : VARIAVEIS',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
     def is_MAISDC(self, token):
         
-        if(token==';'):
+        if(token.valor==';'):
             self.pilha = self.pilha.replace('MAIS_DC','; DC',1)
-        elif(token=='begin'):
+        elif(token.valor=='begin' or token=='$'):
             self.pilha = self.pilha.replace('MAIS_DC','',1)
             self.pilha = self.pilha.lstrip()
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_TIPOVAR(self, token):
         
-        if(token=='real'):
+        if(token.valor=='real'):
             self.pilha = self.pilha.replace('TIPO_VAR','real',1)
-        elif(token=='integer'):
+        elif(token.valor=='integer'):
             self.pilha = self.pilha.replace('TIPO_VAR','integer',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_VARIAVEIS(self, token):
         
-        if(token=='ident'):
+        if(token.valor=='ident'):
             self.pilha = self.pilha.replace('VARIAVEIS','ident MAIS_VAR',1)
-        elif(token=='integer'):
+        elif(token.valor=='integer'):
             self.pilha = self.pilha.replace('VARIAVEIS','integer',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
 
     def is_MAISVAR(self, token):
         
-        if(token==';' or token=='begin'):
-            self.pilha = self.pilha.replace('MAIS_VAR','ident MAIS_VAR',1)
-        elif(token==','):
+        if(token.valor==','):
             self.pilha = self.pilha.replace('MAIS_VAR',', VARIAVEIS',1)
+        elif(token.valor=='$' or token.valor=='begin' or token.valor==';'):
+            self.pilha = self.pilha.replace('MAIS_VAR','',1)
+            self.pilha = self.pilha.lstrip()
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_COMANDOS(self, token):
         
-        if(token=='ident' or token=='write' or token=='read'):
+        if(token.valor=='ident' or token.valor=='write' or token.valor=='read'):
             self.pilha = self.pilha.replace('COMANDOS','COMANDO MAIS_COMANDOS',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_COMANDO(self, token):
         
-        if(token=='ident'):
+        if(token.valor=='ident'):
             self.pilha = self.pilha.replace('COMANDO','ident := EXPRESSAO',1)
-        elif(token=='write'):
+        elif(token.valor=='write'):
             self.pilha = self.pilha.replace('COMANDO','write ( ident )',1)
-        elif(token=='read'):
+        elif(token.valor=='read'):
             self.pilha = self.pilha.replace('COMANDO','read ( ident )',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_MAISCOMANDOS(self, token):
         
-        if(token==';'):
-            self.pilha = self.pilha.replace('MAISCOMANDOS','; COMANDOS',1)
-        elif(token=='end'):
-            self.pilha = self.pilha.replace('MAISCOMANDOS','',1)
+        if(token.valor==';'):
+            self.pilha = self.pilha.replace('MAIS_COMANDOS','; COMANDOS',1)
+        elif(token.valor=='end' or token.valor=='$'):
+            self.pilha = self.pilha.replace('MAIS_COMANDOS','',1)
             self.pilha = self.pilha.lstrip()
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_EXPRESSAO(self, token):
         
-        if(token=='-' or token=='(' or token=='ident' or token=='numero_int' or token=='numero_real'):
+        if(token.valor=='-' or token.valor=='(' or token.valor=='ident' or token.valor=='numero_inteiro' or token.valor=='numero_real' or token.valor==';' or token.valor==')' or token.valor=='end'):
             self.pilha = self.pilha.replace('EXPRESSAO','TERMO OUTROS_TERMOS',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_TERMO(self, token):
         
-        if(token=='-'):
+        if(token.valor=='-' or token.valor=='ident' or token.valor=='end' or token.valor==';' or token.valor=='(' or token.valor==')' or token.valor=='numero_inteiro' or token.valor=='numero_real' or token.valor=='+'):
             self.pilha = self.pilha.replace('TERMO','OP_UN FATOR MAIS_FATORES',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_OUTROSTERMOS(self, token):
         
-        if(token=='+' or token=='-'):
-            self.pilha = self.pilha.replace('OUTROSTERMOS','OP_AD TERMO OUTROS_TERMOS',1)
-        elif(token==';' or token==')' or token=='end'):
-            self.pilha = self.pilha.replace('OUTROSTERMOS','',1)
+        if(token.valor=='+' or token.valor=='-'):
+            self.pilha = self.pilha.replace('OUTROS_TERMOS','OP_AD TERMO OUTROS_TERMOS',1)
+        elif(token.valor==';' or token.valor==')' or token.valor=='end' or token.valor=='$'):
+            self.pilha = self.pilha.replace('OUTROS_TERMOS','',1)
             self.pilha = self.pilha.lstrip()
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_OPUN(self, token):
         
         if(token=='-'):
-            self.pilha = self.pilha.replace('OPUN','-',1)
-        elif(token=='(' or token==')' or token=='ident' or token=='numero_int' or token==')' or token=='numero_real'):
-            self.pilha = self.pilha.replace('OPUN','',1)
+            self.pilha = self.pilha.replace('OP_UN','-',1)
+        elif(token.valor=='(' or token.valor==')' or token.valor=='$' or token.valor=='ident' or token.valor=='numero_inteiro' or token.valor=='numero_real'):
+            self.pilha = self.pilha.replace('OP_UN','',1)
             self.pilha = self.pilha.lstrip()
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
     def is_OPAD(self, token):
         
-        if(token=='-'):
-            self.pilha = self.pilha.replace('OPUN','-',1)
-        elif(token=='+'):
-            self.pilha = self.pilha.replace('OPUN','+',1)
+        if(token.valor=='-'):
+            self.pilha = self.pilha.replace('OP_AD','-',1)
+        elif(token.valor=='+'):
+            self.pilha = self.pilha.replace('OP_AD','+',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
     def is_OPMUL(self, token):
         
-        if(token=='/'):
-            self.pilha = self.pilha.replace('OPMUL','/',1)
-        elif(token=='*'):
-            self.pilha = self.pilha.replace('OPMUL','*',1)
+        if(token.valor=='/'):
+            self.pilha = self.pilha.replace('OP_MUL','/',1)
+        elif(token.valor=='*'):
+            self.pilha = self.pilha.replace('OP_MUL','*',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
 
 
     def is_FATOR(self, token):
         
-        if(token=='('):
+        if(token.valor=='('):
             self.pilha = self.pilha.replace('FATOR','( EXPRESSAO )',1)
-        elif(token=='ident'):
+        elif(token.valor=='ident'):
             self.pilha = self.pilha.replace('FATOR','ident',1)
-        elif(token=='numero_int'):
-            self.pilha = self.pilha.replace('FATOR','numero_int',1)
-        elif(token=='numero_real'):
+        elif(token.valor=='numero_inteiro'):
+            self.pilha = self.pilha.replace('FATOR','numero_inteiro',1)
+        elif(token.valor=='numero_real'):
             self.pilha = self.pilha.replace('FATOR','numero_real',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
     def is_MAISFATORES(self, token):
         
-        if(token=='+' or token=='-' or token==';' or token==')' or token=='end'):
-            self.pilha = self.pilha.replace('MAISFATORES','',1)
+        if(token.valor=='+' or token.valor=='-' or token.valor==';' or token.valor==')' or token.valor=='end' or token.valor=='$'):
+            self.pilha = self.pilha.replace('MAIS_FATORES','',1)
             self.pilha = self.pilha.lstrip()
-        elif(token=='/' or token=='*'):
-            self.pilha = self.pilha.replace('MAISFATORES','OP_MUL FATOR MAIS_FATORES',1)
+        elif(token.valor=='/' or token.valor=='*'):
+            self.pilha = self.pilha.replace('MAIS_FATORES','OP_MUL FATOR MAIS_FATORES',1)
         else:
-            raise Exception('Erro sintático.')
+            raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
 
     #---------------------------------------FIM---------------------------------------
 
-
+            
 
 
     #---------------------------------------INÍCIO DO MÉTODO PARA AVALIAR SINTAXE---------------------------------------
@@ -212,7 +217,7 @@ class Sintatico():
                 self.listaSubCadeias.append(lista)
                 lista = []
             elif token.valor not in  ['\n',' ','\t']:
-                lista.append(token.valor)
+                lista.append(token)
 
         if len(lista) > 0:
             self.listaSubCadeias.append(lista)
@@ -226,19 +231,20 @@ class Sintatico():
         self.pilha = 'PROGRAMA$'
         self.cadeia = ''
         for listaSubCadeia in self.listaSubCadeias:
+            self.linha += 1
             #print("lista entrada: " + str(listaSubCadeia))
             for token in listaSubCadeia:
                 #print(token)
-                if (str(token).isnumeric() and '.' in token):
-                    literal = token
-                    token = 'numero_real'
-                if (str(token).isnumeric() and '.' not in token):
-                    literal = token
-                    token = 'numero_inteiro'
-                if ((self.pilha == '$') and (token == '$')):
+                if (token.tipo.value==1):
+                    literal = token.valor
+                    token.valor = 'numero_real'
+                if (token.tipo.value==0):
+                    literal = token.valor
+                    token.valor = 'numero_inteiro'
+                if ((self.pilha == '$') and (token.valor == '$')):
                     break
 
-                while not((self.pilha == '$') and (token == '$')):
+                while not((self.pilha == '$') and (token.valor == '$')):
 
                     # PILHA COM INICIAL NÃO TERMINAL
                     if (self.pilha.startswith('PROGRAMA')):
@@ -254,28 +260,42 @@ class Sintatico():
                     elif(self.pilha.startswith('TIPO_VAR')):
                         self.is_TIPOVAR(token)
                     elif(self.pilha.startswith('VARIAVEIS')):
+                        if(token.tipo.value==8):
+                            token.valor = 'ident'
                         self.is_VARIAVEIS(token)
                     elif(self.pilha.startswith('MAIS_VAR')):
                         self.is_MAISVAR(token)
-                    elif(self.pilha.startswith('COMANDO') and self.pilha[8] != "S"):
+                    elif(self.pilha.startswith('COMANDO') and self.pilha[7] != "S"):
+                        if(token.tipo.value==8):
+                            token.valor = 'ident'
                         self.is_COMANDO(token)
                     elif(self.pilha.startswith('COMANDOS')):
+                        if(token.tipo.value==8):
+                            token.valor = 'ident'
                         self.is_COMANDOS(token)
                     elif(self.pilha.startswith('MAIS_COMANDOS')):
                         self.is_MAISCOMANDOS(token)
                     elif(self.pilha.startswith('EXPRESSAO')):
+                        if(token.tipo.value==8):
+                            token.valor = 'ident'
                         self.is_EXPRESSAO(token)
                     elif(self.pilha.startswith('TERMO')):
+                        if(token.tipo.value==8):
+                            token.valor = 'ident'
                         self.is_TERMO(token)
                     elif(self.pilha.startswith('OUTROS_TERMOS')):
                         self.is_OUTROSTERMOS(token)
                     elif(self.pilha.startswith('OP_UN')):
+                        if(token.tipo.value==8):
+                            token.valor = 'ident'
                         self.is_OPUN(token)
                     elif(self.pilha.startswith('OP_AD')):
                         self.is_OPAD(token)
                     elif(self.pilha.startswith('OP_MUL')):
                         self.is_OPMUL(token)
                     elif(self.pilha.startswith('FATOR')):
+                        if(token.tipo.value==8):
+                            token.valor = 'ident'
                         self.is_FATOR(token)
                     elif(self.pilha.startswith('MAIS_FATORES')):
                         self.is_MAISFATORES(token)
@@ -308,7 +328,7 @@ class Sintatico():
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  '.'
                         break
-                    elif(self.pilha.startswith(':')):
+                    elif(self.pilha.startswith(':') and self.pilha[1] != "="):
                         self.pilha = self.pilha.replace(':','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  ':'
@@ -361,7 +381,7 @@ class Sintatico():
                     elif(self.pilha.startswith('ident')):
                         self.pilha = self.pilha.replace('ident','', 1)
                         self.pilha = self.pilha.lstrip()
-                        self.cadeia = self.cadeia + ' ' +  token
+                        self.cadeia = self.cadeia + ' ' +  token.valor
                         break
                     elif(self.pilha.startswith('write')):
                         self.pilha = self.pilha.replace('write','', 1)
@@ -373,10 +393,10 @@ class Sintatico():
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  'read'
                         break
-                    elif(self.pilha.startswith('numero_int')):
-                        self.pilha = self.pilha.replace('numero_int','', 1)
+                    elif(self.pilha.startswith('numero_inteiro')):
+                        self.pilha = self.pilha.replace('numero_inteiro','', 1)
                         self.pilha = self.pilha.lstrip()
-                        self.cadeia = self.cadeia + ' ' +  'numero_int'
+                        self.cadeia = self.cadeia + ' ' +  'numero_inteiro'
                         break
                     elif(self.pilha.startswith('numero_real')):
                         self.pilha = self.pilha.replace('numero_real','', 1)
@@ -410,7 +430,7 @@ def main():
 
     # tokens = ['program','teste', 'real', ':', 'a',',','b',';', 'begin', 'read', '(', 'a', ')', ';', '1.5', 'b', ':=', 'a', '*', 'a', ';','write','(','b',')',';','end']
     # Sintatico(tokens)
-    # print("Cadeia aceita")
+    print("Cadeia aceita")
 
 
 main()

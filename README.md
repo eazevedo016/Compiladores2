@@ -1,5 +1,6 @@
 # Autômato
-![image](https://user-images.githubusercontent.com/75282286/183781215-6047fa4d-a427-46da-a9d7-7e227313ae0f.png)
+![image](https://user-images.githubusercontent.com/75282286/184503154-23dc5e00-8bd6-43fb-816d-9406d7c15770.png)
+
 
 
 # Gramática 

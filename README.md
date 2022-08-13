@@ -44,7 +44,10 @@
 
 # Alfabeto
 Terminais:
-- :=  , ; , : , ( , ) , program , ident , begin , end , real , integer  , read , write , numero_int , numero_real 
+- :=  ; : ( ) program ident begin end real integer read write numero_int numero_real 
+
+Não terminais
+- PROGRAMA CORPO DC COMANDOS DC_V MAIS_DC TIPO_VAR VARIAVEIS MAIS_VAR COMANDO MAIS_COMANDOS EXPRESSAO TERMO OUTROS_TERMOS OP_UN FATOR MAIS_FATORES OP_AD OP_MUL
 
 # First e Follow
 

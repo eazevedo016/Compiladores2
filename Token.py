@@ -25,7 +25,7 @@ class TipoToken(Enum):
      # espacos = [:=]
     relacional = 6
 
-    # outros = [, ;]
+    # outros = [, ; .]
     outros = 7
 
     variaveis = 8

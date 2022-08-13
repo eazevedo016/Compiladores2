@@ -58,6 +58,9 @@ class Lexico():
                 elif (self.isOutros(c)):
                     estado = 13
                     valor += c
+                elif (self.isPontoFinal(c)):
+                    estado = 16
+                    valor += c
                 elif (c == "$$"):
                     break
                 else:
@@ -235,6 +238,18 @@ class Lexico():
                 self.backChar()
 
                 return token
+
+
+            # ESTADO 16
+            if(estado == 16):
+                token = Token()
+                
+                # atribui o valor e tipo de token
+                token.tipo = TipoToken.outros
+                token.valor = valor
+                self.backChar()
+
+                return token
         
 
         
@@ -250,6 +265,9 @@ class Lexico():
         return (c == '(' or c == ')')
 
     def isPonto(self, c):
+        return (c == '.')
+    
+    def isPontoFinal(self, c):
         return (c == '.')
     
     def isEspaco(self,c):

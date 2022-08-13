@@ -467,9 +467,8 @@ def main():
     sintatico = Sintatico()
     sintatico.avaliaSintaxe('entrada.txt')
 
-    # tokens = ['program','teste', 'real', ':', 'a',',','b',';', 'begin', 'read', '(', 'a', ')', ';', '1.5', 'b', ':=', 'a', '*', 'a', ';','write','(','b',')',';','end']
-    # Sintatico(tokens)
-    print("Cadeia aceita")
+    
+    print("Entrada sintaticamente correta.")
 
 
 main()

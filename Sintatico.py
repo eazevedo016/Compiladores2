@@ -249,54 +249,93 @@ class Sintatico():
                     # PILHA COM INICIAL NÃO TERMINAL
                     if (self.pilha.startswith('PROGRAMA')):
                         self.is_PROGRAMA(token)
+
                     elif (self.pilha.startswith('CORPO')):
                         self.is_CORPO(token)
+
                     elif (self.pilha.startswith('DC') and self.pilha[2] != "_"):
                         self.is_DC(token)
+
                     elif (self.pilha.startswith('DC_V')):
                         self.is_DCV(token)
+
                     elif (self.pilha.startswith('MAIS_DC')):
                         self.is_MAISDC(token)
+
                     elif(self.pilha.startswith('TIPO_VAR')):
                         self.is_TIPOVAR(token)
+
                     elif(self.pilha.startswith('VARIAVEIS')):
                         if(token.tipo.value==8):
+                            literal = token.valor
                             token.valor = 'ident'
                         self.is_VARIAVEIS(token)
+                        if (token.tipo.value==8):
+                            token.valor = literal
+
                     elif(self.pilha.startswith('MAIS_VAR')):
                         self.is_MAISVAR(token)
+
                     elif(self.pilha.startswith('COMANDO') and self.pilha[7] != "S"):
                         if(token.tipo.value==8):
+                            literal = token.valor
                             token.valor = 'ident'
                         self.is_COMANDO(token)
+                        if (token.tipo.value==8):
+                            token.valor = literal
+
                     elif(self.pilha.startswith('COMANDOS')):
                         if(token.tipo.value==8):
+                            literal = token.valor
                             token.valor = 'ident'
                         self.is_COMANDOS(token)
+                        if(token.tipo.value==8):
+                            token.valor = literal
+
                     elif(self.pilha.startswith('MAIS_COMANDOS')):
                         self.is_MAISCOMANDOS(token)
+
                     elif(self.pilha.startswith('EXPRESSAO')):
                         if(token.tipo.value==8):
+                            literal = token.valor
                             token.valor = 'ident'
                         self.is_EXPRESSAO(token)
+                        if (token.tipo.value==8):
+                            token.valor = literal
+
                     elif(self.pilha.startswith('TERMO')):
                         if(token.tipo.value==8):
+                            literal = token.valor
                             token.valor = 'ident'
                         self.is_TERMO(token)
+                        if (token.tipo.value==8):
+                            token.valor = literal
+
                     elif(self.pilha.startswith('OUTROS_TERMOS')):
                         self.is_OUTROSTERMOS(token)
+
                     elif(self.pilha.startswith('OP_UN')):
                         if(token.tipo.value==8):
+                            literal = token.valor
                             token.valor = 'ident'
                         self.is_OPUN(token)
+                        if (token.tipo.value==8):
+                            token.valor = literal
+
                     elif(self.pilha.startswith('OP_AD')):
                         self.is_OPAD(token)
+
                     elif(self.pilha.startswith('OP_MUL')):
                         self.is_OPMUL(token)
+
                     elif(self.pilha.startswith('FATOR')):
                         if(token.tipo.value==8):
+                            literal = token.valor
                             token.valor = 'ident'
                         self.is_FATOR(token)
+                        if (token.tipo.value==8):
+                            token.valor = literal
+
                     elif(self.pilha.startswith('MAIS_FATORES')):
                         self.is_MAISFATORES(token)
                     

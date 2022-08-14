@@ -11,7 +11,7 @@ class TabelaVariaveis():
     def inserir(self, novaVariavel):
         if self.inserirNatabelaVariaveis:
             if novaVariavel in self.tabelaVariaveis:
-                raise Exception(f"ERRO SEMANTICO variavel {novaVariavel} já foi declada!")
+                raise Exception(f"Erro semântico: '{novaVariavel}' já foi declarado(a).")
             else:
                 self.tabelaVariaveis.append(novaVariavel)
         else:
@@ -21,7 +21,7 @@ class TabelaVariaveis():
         if variavel in self.tabelaVariaveis:
             return self.tabelaVariaveis.index(variavel)
         else:
-            raise Exception(f"ERRO SEMANTICO a Variavel {variavel} não foi declada!")
+            raise Exception(f"Erro semântico: '{variavel}' não foi declarado(a).")
 
 
 class Sintatico():

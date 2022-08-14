@@ -34,6 +34,7 @@ class TipoToken(Enum):
 
 
 
+
 class Token():
     tipo: TipoToken
     valor: str

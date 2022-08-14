@@ -1,13 +1,40 @@
 from Lexico import Lexico
 from Token import Token,TipoToken
+from PosFixa import PosFixa
+
+
+class TabelaVariaveis():
+    tabelaVariaveis = []
+    inserirNatabelaVariaveis = False
+    entrouBegin = False
+    #variaveis de controle
+    def inserir(self, novaVariavel):
+        if self.inserirNatabelaVariaveis:
+            if novaVariavel in self.tabelaVariaveis:
+                raise Exception(f"ERRO SEMANTICO variavel {novaVariavel} já foi declada!")
+            else:
+                self.tabelaVariaveis.append(novaVariavel)
+        else:
+            pass
+    
+    def posicaoVariavel(self,variavel):
+        if variavel in self.tabelaVariaveis:
+            return self.tabelaVariaveis.index(variavel)
+        else:
+            raise Exception(f"ERRO SEMANTICO a Variavel {variavel} não foi declada!")
 
 
 class Sintatico():
     listaSubCadeias = []
     pilha = ""
     linha = 0
+    geraCodigo = []
+    tabelaVariaveis = TabelaVariaveis()
+    pilhaGeraCodigo = PosFixa()
 
-
+    #variaveis de controle
+    mudarParaARMZ = False
+    
 
     # ---------------------------------------MÉTODOS DE CONSULTA NA TABELA M---------------------------------------
 
@@ -67,7 +94,8 @@ class Sintatico():
 
     def is_VARIAVEIS(self, token):
         
-        if(token.valor=='ident'):
+        if(token.valor=='ident'): 
+            self.tabelaVariaveis.inserirNatabelaVariaveis = True;  
             self.pilha = self.pilha.replace('VARIAVEIS','ident MAIS_VAR',1)
         elif(token.valor=='integer'):
             self.pilha = self.pilha.replace('VARIAVEIS','integer',1)
@@ -98,10 +126,12 @@ class Sintatico():
     def is_COMANDO(self, token):
         
         if(token.valor=='ident'):
+            self.mudarParaARMZ = True
             self.pilha = self.pilha.replace('COMANDO','ident := EXPRESSAO',1)
         elif(token.valor=='write'):
             self.pilha = self.pilha.replace('COMANDO','write ( ident )',1)
         elif(token.valor=='read'):
+            self.mudarParaARMZ = True
             self.pilha = self.pilha.replace('COMANDO','read ( ident )',1)
         else:
             raise Exception(f"Erro sintático.\nToken: {token.valor}\nLinha: {self.linha}")
@@ -148,6 +178,7 @@ class Sintatico():
     def is_OPUN(self, token):
         
         if(token=='-'):
+            self.pilhaGeraCodigo.ajustarPilhas(["INVE",""])
             self.pilha = self.pilha.replace('OP_UN','-',1)
         elif(token.valor=='(' or token.valor==')' or token.valor=='$' or token.valor=='ident' or token.valor=='numero_inteiro' or token.valor=='numero_real'):
             self.pilha = self.pilha.replace('OP_UN','',1)
@@ -231,6 +262,7 @@ class Sintatico():
         self.pilha = 'PROGRAMA$'
         self.cadeia = ''
         for listaSubCadeia in self.listaSubCadeias:
+            self.geraCodigo.append(['$',''])
             self.linha += 1
             #print("lista entrada: " + str(listaSubCadeia))
             for token in listaSubCadeia:
@@ -329,6 +361,7 @@ class Sintatico():
                         self.is_OPMUL(token)
 
                     elif(self.pilha.startswith('FATOR')):
+                        
                         if(token.tipo.value==8):
                             literal = token.valor
                             token.valor = 'ident'
@@ -343,21 +376,25 @@ class Sintatico():
                     # PILHA COM INICIAL TERMINAL
 
                     elif(self.pilha.startswith('+')):
+                        self.pilhaGeraCodigo.ajustarPilhas(['SOMA', ''])
                         self.pilha = self.pilha.replace('+','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  '+'
                         break
                     elif(self.pilha.startswith('-')):
+                        self.pilhaGeraCodigo.ajustarPilhas(['SUBT', ''])
                         self.pilha = self.pilha.replace('-','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  '-'
                         break
                     elif(self.pilha.startswith('/')):
+                        self.pilhaGeraCodigo.ajustarPilhas(['DIVI', ''])
                         self.pilha = self.pilha.replace('/','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  '/'
                         break
                     elif(self.pilha.startswith('*')):
+                        self.pilhaGeraCodigo.ajustarPilhas(['MULT', ''])
                         self.pilha = self.pilha.replace('*','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  '*'
@@ -388,21 +425,26 @@ class Sintatico():
                         self.cadeia = self.cadeia + ' ' +  ':='
                         break
                     elif(self.pilha.startswith('(')):
+                        self.pilhaGeraCodigo.inserirPilha(['(',''])
                         self.pilha = self.pilha.replace('(','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  '('
                         break
                     elif(self.pilha.startswith(')')):
+                        self.pilhaGeraCodigo.desempilharParenteses()
                         self.pilha = self.pilha.replace(')','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  ')'
                         break
                     elif(self.pilha.startswith('begin')):
                         self.pilha = self.pilha.replace('begin','', 1)
+                        self.tabelaVariaveis.inserirNatabelaVariaveis = False 
+                        self.tabelaVariaveis.entrouBegin = True 
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  'begin'
                         break
                     elif(self.pilha.startswith('end')):
+                        self.pilhaGeraCodigo.inserirPosfixa(['PARA', 0])
                         self.pilha = self.pilha.replace('end','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  'end'
@@ -418,31 +460,45 @@ class Sintatico():
                         self.cadeia = self.cadeia + ' ' +  'integer'
                         break
                     elif(self.pilha.startswith('ident')):
+                        if(self.tabelaVariaveis.inserirNatabelaVariaveis):
+                            self.tabelaVariaveis.inserir(token.valor)
+                            self.pilhaGeraCodigo.inserirPosfixa(['ALME', 0]) #ALME
+                        elif self.tabelaVariaveis.entrouBegin:
+                            if self.mudarParaARMZ:
+                                self.pilhaGeraCodigo.ajustarPilhas(['ARMZ', self.tabelaVariaveis.posicaoVariavel(token.valor)]) #CRLV
+                                self.mudarParaARMZ = False
+                            else:
+                                self.pilhaGeraCodigo.inserirPosfixa(['CRVL', self.tabelaVariaveis.posicaoVariavel(token.valor)]) #CRLV
                         self.pilha = self.pilha.replace('ident','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  token.valor
                         break
                     elif(self.pilha.startswith('write')):
+                        self.pilhaGeraCodigo.ajustarPilhas(['IMPR', ''])
                         self.pilha = self.pilha.replace('write','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  'write'
                         break
                     elif(self.pilha.startswith('read')):
+                        self.pilhaGeraCodigo.inserirPosfixa(['LEIT', ''])
                         self.pilha = self.pilha.replace('read','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  'read'
                         break
                     elif(self.pilha.startswith('numero_inteiro')):
+                        self.pilhaGeraCodigo.inserirPosfixa(['CRCT', literal])
                         self.pilha = self.pilha.replace('numero_inteiro','', 1)
                         self.pilha = self.pilha.lstrip()
-                        self.cadeia = self.cadeia + ' ' +  'numero_inteiro'
+                        self.cadeia = self.cadeia + ' ' +  literal
                         break
                     elif(self.pilha.startswith('numero_real')):
+                        self.pilhaGeraCodigo.inserirPosfixa(['CRCT', literal])
                         self.pilha = self.pilha.replace('numero_real','', 1)
                         self.pilha = self.pilha.lstrip()
-                        self.cadeia = self.cadeia + ' ' +  'numero_real'
+                        self.cadeia = self.cadeia + ' ' +  literal
                         break
                     elif(self.pilha.startswith('program')):
+                        self.pilhaGeraCodigo.inserirPosfixa(["INPP",""]) #INPP
                         self.pilha = self.pilha.replace('program','', 1)
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  'program'
@@ -453,22 +509,4 @@ class Sintatico():
                         self.pilha = self.pilha.lstrip()
                         self.cadeia = self.cadeia + ' ' +  '$'
                         break 
-                
-            
-
-
-
-
-
-
-
-def main():
-
-    sintatico = Sintatico()
-    sintatico.avaliaSintaxe('entrada.txt')
-
-    
-    print("Entrada sintaticamente correta.")
-
-
-main()
+            self.pilhaGeraCodigo.desempilharTudo()            

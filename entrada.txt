@@ -1,10 +1,11 @@
 program teste
-  real : a;
-  real: b;
-  integer : c, d;
+  real : a,b;
+  integer : c;
 begin 
-  read(a); 
-  read(c);
-  b := x + c;
-  d := b - a
+  read(a);
+  read(b);
+  c := a * b;
+  write(a);
+  write(b);
+  write(c)
 end.

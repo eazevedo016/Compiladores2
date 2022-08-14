@@ -97,6 +97,33 @@ Não terminais
 - FOLLOW(OP_MUL) -> { ident ( numero_int numero_real }
 
 
+# Analisador Semântico
+
+- Não se pode usar uma variável que não tenha sido previamente declarada;
+- Não se pode declarar uma mesma variável mais de uma vez;
+- O padrão de nome para declaração de variável consiste no uso de letras minúsculas sem acentuação podendo se usar o underline(_).
+
+# Código objeto
+
+Foram utilizados os seguintes códigos de instrução para execução da máquian hipotética:
+- INPP   inicia programa
+- MULT   multiplica elemento do topo pelo antecessor
+- SOMA   soma topo da pilha com seu antecessor
+- INVE   inverte sinal do topo
+- DIVI   divide elemento do antecessor pelo do topo
+- SUBT   subtrai o elemento do topo do antecessor
+- ARMZ   armazena o topo da pilha no endereço n
+- LEIT   lê um dado do arquivo de entrada
+- ALME   reserva m posições na pilha
+- CRCT   carrega constante k na pilha
+- CRVL   carrega valor de endereço n na pilha
+- PARA   termina a execução do programa
+- IMPR   imprime valor inteiro
+
+
+
+
+
 
 
 

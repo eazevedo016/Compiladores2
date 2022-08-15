@@ -1,6 +1,10 @@
 # Autômato
 ![image](https://user-images.githubusercontent.com/75282286/184503154-23dc5e00-8bd6-43fb-816d-9406d7c15770.png)
 
+# Como executar
+
+- Faça o download dos fontes ou clone o repositório
+- Execute o arquivo Main.py
 
 
 # Gramática 
